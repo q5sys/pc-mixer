@@ -10,6 +10,8 @@ COMMENT=	QT5 based audio mixer for FreeBSD
 
 LICENSE=	BSD2CLAUSE
 
+LIB_DEPENDS=	libtrueos-ui.so:sysutils/trueos-libqt5
+
 WRKSRC_SUBDIR=  src-qt5
 MAKE_ARGS=      PREFIX=${STAGEDIR}${PREFIX}
 
