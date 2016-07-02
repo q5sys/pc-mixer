@@ -31,9 +31,9 @@ int main( int argc, char ** argv )
     QTranslator translator;
     QLocale mylocale;
     QString langCode = mylocale.name();
-    if ( ! QFile::exists( PREFIX + "/share/pcbsd/i18n/pc-mixer_" + langCode + ".qm" ) )
+    if ( ! QFile::exists( PREFIX + "/share/trueos/i18n/pc-mixer_" + langCode + ".qm" ) )
       langCode.truncate(langCode.indexOf("_"));
-    translator.load( QString("pc-mixer_") + langCode, PREFIX + "/share/pcbsd/i18n/" );
+    translator.load( QString("pc-mixer_") + langCode, PREFIX + "/share/trueos/i18n/" );
     a.installTranslator( &translator );
     qDebug() << "Locale:" << langCode;
     QTextCodec::setCodecForLocale( QTextCodec::codecForName("UTF-8") ); //Force Utf-8 compliance
