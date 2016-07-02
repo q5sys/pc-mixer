@@ -1,7 +1,7 @@
 #include "MixerGUI.h"
 #include "ui_MixerGUI.h"
 
-#include <pcbsd-utils.h>
+#include <trueos-utils.h>
 
 MixerGUI::MixerGUI(QSettings *set) : QMainWindow(), ui(new Ui::MixerGUI){
   ui->setupUi(this); //load the designer file
@@ -66,7 +66,7 @@ void MixerGUI::updateGUI(){
   ui->scrollArea->widget()->setLayout(layout);
   ui->scrollArea->setMinimumHeight(ui->scrollArea->widget()->minimumSizeHint().height()+ui->scrollArea->horizontalScrollBar()->height());
   //Now rebuild the output device list
-  QStringList outdevs = pcbsd::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
+  QStringList outdevs = trueos::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
   for(int i=0; i<outdevs.length(); i++){
     if(outdevs[i].startsWith("pcm")){
       ui->combo_outdevice->addItem(outdevs[i].section(" default",0,0), outdevs[i].section(":",0,0) );

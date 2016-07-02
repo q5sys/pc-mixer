@@ -1,11 +1,11 @@
 #include "MixerTray.h"
 
-#include "pcbsd-utils.h"
+#include "trueos-utils.h"
 
 MixerTray::MixerTray() : QSystemTrayIcon(){
   starting = true;
   //Initialize the settings backend
-  settings = new QSettings("PCBSD", "pc-mixer");
+  settings = new QSettings("TrueOS", "pc-mixer");
   //Initialize all the widgets
   isMuted = false;
   slider = new QSlider(Qt::Vertical, 0);
@@ -67,7 +67,7 @@ MixerTray::~MixerTray(){
 void MixerTray::slotFillOutputDevices()
 {
     soundOutput->clear();
-    QStringList outdevs = pcbsd::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
+    QStringList outdevs = trueos::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
     for(int i=0; i<outdevs.length(); i++){
         if(outdevs[i].startsWith("pcm")){
           QAction* action = new QAction(soundOutput);
