@@ -1,7 +1,7 @@
 
 QT += core gui widgets network
-LIBS	+= -L../libpcbsd -L/usr/local/lib -lpcbsd-ui -lpcbsd-utils
-INCLUDEPATH += ../libpcbsd/utils ../libpcbsd/ui ../libpcbsd /usr/local/include
+LIBS	+= -L../libtrueos -L/usr/local/lib -ltrueos-ui -ltrueos-utils
+INCLUDEPATH += ../libtrueos/utils ../libtrueos/ui ../libtrueos /usr/local/include
 
 TARGET=pc-mixer
 TEMPLATE	= app
