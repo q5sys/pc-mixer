@@ -1,7 +1,7 @@
 
-QT += core gui widgets network
-LIBS	+= -L../libtrueos -L/usr/local/lib -ltrueos-ui -ltrueos-utils
-INCLUDEPATH += ../libtrueos/utils ../libtrueos/ui ../libtrueos /usr/local/include
+QT += core gui widgets network multimedia
+LIBS	+= -L/usr/local/lib
+INCLUDEPATH += /usr/local/include
 
 TARGET=pc-mixer
 TEMPLATE	= app
@@ -12,12 +12,14 @@ CONFIG	+= qt warn_on release
 HEADERS	+= MixerBackend.h \
 		MixerTray.h  \
 		MixerGUI.h \
-		DeviceWidget.h
+		DeviceWidget.h \
+		SingleApplication.h
 		
 SOURCES	+= main.cpp \
 		MixerTray.cpp  \
 		MixerGUI.cpp \
-		DeviceWidget.cpp
+		DeviceWidget.cpp \
+		SingleApplication.cpp
 
 RESOURCES += pc-mixer.qrc
 

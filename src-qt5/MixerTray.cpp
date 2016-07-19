@@ -1,7 +1,5 @@
 #include "MixerTray.h"
 
-#include "trueos-utils.h"
-
 MixerTray::MixerTray() : QSystemTrayIcon(){
   starting = true;
   //Initialize the settings backend
@@ -67,7 +65,7 @@ MixerTray::~MixerTray(){
 void MixerTray::slotFillOutputDevices()
 {
     soundOutput->clear();
-    QStringList outdevs = trueos::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
+    QStringList outdevs = runShellCommand("cat /dev/sndstat");
     for(int i=0; i<outdevs.length(); i++){
         if(outdevs[i].startsWith("pcm")){
           QAction* action = new QAction(soundOutput);
@@ -147,11 +145,11 @@ void MixerTray::loadVol(){
 void MixerTray::slotOutputSelected()
 {
     QAction* act = dynamic_cast<QAction*> (QObject::sender());
-    QString dev_name = act->data().toString();
-    qDebug()<<dev_name;
+    QString dev = act->data().toString().section("pcm",1,-1); //should juse be a number
+    qDebug()<<dev;
 
-    if(dev_name.isEmpty()){ return; }
-    QProcess::execute("pc-sysconfig \"setdefaultaudiodevice "+dev_name+"\"");
+    if(dev.isEmpty()){ return; }
+    QProcess::execute("sysctl hw.snd.default_unit="+dev+"\"");
 
     if(GUI->isVisible()){
       //also update the main mixer GUI if it is visible
@@ -210,7 +208,7 @@ void MixerTray::changeVol(int percent, bool modify){
 }
 
 void MixerTray::RestartPulseAudio(){
+  if(!QFile::exists("/usr/local/bin/pulseaudio")){ return; }
   QProcess::execute("pulseaudio --kill");
   QProcess::startDetached("start-pulseaudio-x11");
 }
-

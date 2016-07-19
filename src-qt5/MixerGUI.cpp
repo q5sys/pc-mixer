@@ -1,8 +1,6 @@
 #include "MixerGUI.h"
 #include "ui_MixerGUI.h"
 
-#include <trueos-utils.h>
-
 MixerGUI::MixerGUI(QSettings *set) : QMainWindow(), ui(new Ui::MixerGUI){
   ui->setupUi(this); //load the designer file
   settings = set; //save this settings access for later
@@ -66,7 +64,8 @@ void MixerGUI::updateGUI(){
   ui->scrollArea->widget()->setLayout(layout);
   ui->scrollArea->setMinimumHeight(ui->scrollArea->widget()->minimumSizeHint().height()+ui->scrollArea->horizontalScrollBar()->height());
   //Now rebuild the output device list
-  QStringList outdevs = trueos::Utils::runShellCommand("pc-sysconfig list-audiodev").join("").split(", ");
+  QStringList outdevs =runShellCommand("cat /dev/sndstat");
+  qDebug() << "Output Devices Found:" << outdevs;
   for(int i=0; i<outdevs.length(); i++){
     if(outdevs[i].startsWith("pcm")){
       ui->combo_outdevice->addItem(outdevs[i].section(" default",0,0), outdevs[i].section(":",0,0) );
@@ -94,9 +93,9 @@ void MixerGUI::changeRecordingDevice(QString device){
 }
 
 void MixerGUI::changeOutputDevice(){
-  QString dev = ui->combo_outdevice->currentData().toString();
+  QString dev = ui->combo_outdevice->currentData().toString().section("pcm",1,-1); //should be just a number
   if(dev.isEmpty()){ return; }
-  QProcess::execute("pc-sysconfig \"setdefaultaudiodevice "+dev+"\"");
+  QProcess::execute("sysctl hw.snd.default_unit="+dev);
   updateGUI();
   emit outChanged();
 }
@@ -108,10 +107,22 @@ void MixerGUI::itemChanged(QString device){
 }
  
 void MixerGUI::TestSound(){
-  QProcess::startDetached("mplayer /usr/local/share/sounds/testsound.ogg");
+  static QMediaPlayer *mediaobj = 0;
+  if(mediaobj==0){ 
+    mediaobj = new QMediaPlayer();
+    
+  }else{
+    mediaobj->stop();
+    QApplication::processEvents();
+  }
+  mediaobj->setMedia( QUrl("qrc:/testsound.ogg"));
+  mediaobj->setVolume(100);
+  QApplication::processEvents();
+  mediaobj->play();
 }
 
 void MixerGUI::RestartPulseAudio(){
+  if(!QFile::exists("/usr/local/bin/pulseaudio")){ return; }
   QProcess::execute("pulseaudio --kill");
   QProcess::startDetached("start-pulseaudio-x11");
 }

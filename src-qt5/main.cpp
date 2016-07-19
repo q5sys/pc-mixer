@@ -1,6 +1,6 @@
 #include <qtranslator.h>
 #include <qlocale.h>
-#include <trueos-SingleApplication.h>
+#include <SingleApplication.h>
 #include <QDebug>
 #include <QFile>
 #include <QTextCodec>

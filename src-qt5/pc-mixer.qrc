@@ -17,5 +17,6 @@
         <file>icons/output-internal_speaker.png</file>
         <file>icons/output-usb.png</file>
         <file>icons/output-unknown.png</file>
+	<file>testsound.ogg</file>
     </qresource>
 </RCC>

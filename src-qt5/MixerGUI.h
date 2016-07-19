@@ -9,6 +9,7 @@
 #include <QScrollBar>
 #include <QProcess>
 #include <QAction>
+#include <QMediaPlayer>
 
 #include "DeviceWidget.h"
 #include "MixerBackend.h"
@@ -29,6 +30,23 @@ private:
 	Ui::MixerGUI *ui;
 	QSettings *settings;
 	bool closing;
+
+	QStringList runShellCommand(QString cmd){
+	 //split the command string with individual commands seperated by a ";" (if any)
+	   QProcess p;  
+	   //Make sure we use the system environment to properly read system variables, etc.
+	   p.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+	   //Merge the output channels to retrieve all output possible
+	   p.setProcessChannelMode(QProcess::MergedChannels);   
+	   p.start(cmd);
+	   while(p.state()==QProcess::Starting || p.state() == QProcess::Running){
+	     p.waitForFinished(200);
+	     QCoreApplication::processEvents();
+	   }
+	   QString outstr = p.readAllStandardOutput();
+	 if(outstr.endsWith("\n")){outstr.chop(1);} //remove the newline at the end 
+	 return outstr.split("\n");
+	}
 
 private slots:
 	void hideGUI(){
