@@ -81,6 +81,10 @@ void MixerGUI::updateGUI(){
   ui->combo_default->setVisible(settings!=0);
   ui->label_tray->setVisible(settings!=0);
   ui->actionClose_Mixer_and_Tray->setVisible(settings!=0);
+  //Enable/Disable the pulseaudio shortcuts if they are not installed
+  ui->actionRestart_PulseAudio->setEnabled( QFile::exists("/usr/local/bin/pulseaudio") );
+  ui->action_PulseAudio_Mixer->setEnabled( QFile::exists("/usr/local/bin/pavucontrol") );
+  ui->actionPulseAudio_Settings->setEnabled( QFile::exists("/usr/local/bin/paprefs") );
 }
 
 void MixerGUI::changeDefaultTrayDevice(QString device){
