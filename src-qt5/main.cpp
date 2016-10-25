@@ -27,7 +27,7 @@ int main( int argc, char ** argv )
       qDebug() << "pc-mixer must not be started as root!";
       return 1;
     }
-    
+    bool PICOSESSION = !QString(getenv("PICO_PULSE_COOKIE")).isEmpty();
     QTranslator translator;
     QLocale mylocale;
     QString langCode = mylocale.name();
@@ -40,11 +40,17 @@ int main( int argc, char ** argv )
     
     if(argc>1 && QString(argv[1])=="-notray"){
       //Start up the GUI (no system tray mode)
+      if( PICOSESSION ){ 
+        //PICO session - need to use pulse audio mixer instead (remote volume control)
+        system("pavucontrol &");
+        exit(0);
+      }
       MixerGUI *w = new MixerGUI();
       w->updateGUI();
       w->show();
       QObject::connect( &a, SIGNAL( InputsAvailable(QStringList) ), w, SLOT( slotSingleInstance() ) );
     }else{
+       if(PICOSESSION){ exit(1); } //should not be run on it's own - no tray app for pavucontrol
        //Wait a bit until a system tray is available
        bool ready = false;
        for(int i=0; i<60 && !ready; i++){
