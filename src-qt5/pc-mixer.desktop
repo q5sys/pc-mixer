@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=TrueOS Mixer Tray
+Exec=pc-mixer
+TryExec=pc-mixer
+Terminal=false
+Type=Application
+Icon=audio-volume-high
+Categories=Utility;
+GenericName=Audio Mixer Tray

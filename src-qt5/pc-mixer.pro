@@ -29,7 +29,10 @@ FORMS	=  MixerGUI.ui \
 
 target.path=/usr/local/bin
 
-INSTALLS += target
+appreg.files = pc-mixer.desktop
+appreg.path = $${INSTALL_ROOT}/usr/local/share/applications
+
+INSTALLS += target appreg
 
 TRANSLATIONS =  i18n/pc-mixer_af.ts \
 		i18n/pc-mixer_ar.ts \

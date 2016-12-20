@@ -10,6 +10,10 @@
 #include <QProcess>
 #include <QAction>
 #include <QMediaPlayer>
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
+#include <QMessageBox>
 
 #include "DeviceWidget.h"
 #include "MixerBackend.h"
@@ -48,7 +52,34 @@ private:
 	 return outstr.split("\n");
 	}
 
+	QStringList readFile(QString path){
+	  QFile file(path);
+          QString contents;
+          if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
+	    QTextStream in(&file);
+	    contents = in.readAll();
+	    file.close();
+	  }
+	  return contents.split("\n");
+	}
+
+	bool writeFile(QString path, QStringList contents){
+	  QFile file(path);
+          if(file.open(QIODevice::WriteOnly | QIODevice::Truncate |QIODevice::Text)){
+	    QTextStream out(&file);
+	    out << contents.join("\n");
+	    if(!contents.last().simplified().isEmpty()){ out << "\n"; }//make sure to end with a newline in the file
+	    file.close();
+	  return true;
+	  }
+	  return false;
+	}
+
+	void loadPulseDisabled();
+
 private slots:
+	void setPulseDisabled(bool disable);
+
 	void hideGUI(){
 	  if(settings==0){ this->close(); } //no tray
 	  else{ this->hide(); } //tray
