@@ -14,6 +14,7 @@ MixerGUI::MixerGUI(QSettings *set) : QMainWindow(), ui(new Ui::MixerGUI){
   connect(ui->tool_test, SIGNAL(clicked()), this, SLOT(TestSound()) );
   connect(ui->actionRestart_PulseAudio, SIGNAL(triggered()), this, SLOT(RestartPulseAudio()) );
   connect(ui->check_disablepulse, SIGNAL(toggled(bool)), this, SLOT(setPulseDisabled(bool)) );
+  connect(ui->tool_set_default, SIGNAL(clicked()), this, SLOT(saveOutputDevice()) );
 }
 
 MixerGUI::~MixerGUI(){
@@ -197,6 +198,12 @@ void MixerGUI::changeOutputDevice(){
   emit outChanged();
 }
 
+void MixerGUI::saveOutputDevice(){
+  QString dev = ui->combo_outdevice->currentData().toString().section("pcm",1,-1); //should be just a number
+  if(dev.isEmpty()){ return; }
+  QProcess::execute("qsudo sysrc -f /etc/sysctl.conf hw.snd.default_unit="+dev);
+}
+
 void MixerGUI::itemChanged(QString device){
   if(device == ui->combo_default->currentText()){
     emit updateTray();
@@ -205,9 +212,10 @@ void MixerGUI::itemChanged(QString device){
  
 void MixerGUI::TestSound(){
   static QMediaPlayer *mediaobj = 0;
+  //ui->tool_test->setEnabled(false);
   if(mediaobj==0){ 
     mediaobj = new QMediaPlayer();
-    
+    connect(mediaobj, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(TestStateChanged(QMediaPlayer::State)) );
   }else{
     mediaobj->stop();
     QApplication::processEvents();
@@ -216,6 +224,10 @@ void MixerGUI::TestSound(){
   mediaobj->setVolume(100);
   QApplication::processEvents();
   mediaobj->play();
+}
+
+void MixerGUI::TestStateChanged(QMediaPlayer::State state){
+  ui->tool_test->setEnabled(state == QMediaPlayer::StoppedState);
 }
 
 void MixerGUI::RestartPulseAudio(){

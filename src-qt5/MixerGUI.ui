@@ -113,25 +113,47 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QComboBox" name="combo_outdevice"/>
-          </item>
-          <item>
-           <widget class="QToolButton" name="tool_test">
-            <property name="text">
-             <string>Test</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="4" column="1">
          <widget class="QCheckBox" name="check_disablepulse">
           <property name="text">
            <string>Disable PulseAudio</string>
           </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QFrame" name="">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QComboBox" name="combo_outdevice"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QToolButton" name="tool_test">
+               <property name="statusTip">
+                <string>Test the current device</string>
+               </property>
+               <property name="text">
+                <string>Test</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="tool_set_default">
+               <property name="statusTip">
+                <string>Set the current device as the system-wide default</string>
+               </property>
+               <property name="text">
+                <string>Set as Default</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>

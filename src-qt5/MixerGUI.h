@@ -97,8 +97,11 @@ private slots:
 	void changeDefaultTrayDevice(QString device);
 	void changeRecordingDevice(QString device);
 	void changeOutputDevice();
+	void saveOutputDevice();
+
 	void itemChanged(QString device); //for individual device adjustments 
 	void TestSound();
+	void TestStateChanged(QMediaPlayer::State);
 	void RestartPulseAudio();
 	
 	void slotSingleInstance(){
