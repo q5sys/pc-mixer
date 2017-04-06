@@ -63,9 +63,9 @@ Due to the number of repositories under the TrueOS "umbrella", the TrueOS Projec
 * [lumina-docs](https://github.com/trueos/lumina-docs) : Issues related to the Lumina Handbook.
 * [sysadm-docs](https://github.com/trueos/sysadm-docs) : Issues related to the SysAdm API Guide, Client, and Server Handbooks.
 * [trueos-website](https://github.com/trueos/trueos-website) : Issues involving any of the TrueOS Project websites: 
- - https://www.lumina-desktop.org
- - https://www.trueos.org
- - https://www.sysadm.us
+  - https://www.lumina-desktop.org
+  - https://www.trueos.org
+  - https://www.sysadm.us
 
 The TrueOS handbook has detailed instructions to help you report a bug (https://www.trueos.org/handbook/helpsupport.html#report-a-bug). It is recommended to refer to these instructions when creating new GitHub issues. Better bug reports usually result in faster fixes!
 
