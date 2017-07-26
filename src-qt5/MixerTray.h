@@ -78,6 +78,12 @@ private slots:
 	  QCoreApplication::exit(0);
 	}
 
+	void hoverDisable(QAction* action){
+	  if(action != soundOutput->menuAction() && actionMenu->geometry().contains(QCursor::pos()) ){
+	    soundOutput->hide();
+	  }
+	}
+
 	void muteClicked(){
 	  if(isMuted && CVOL ==0){
 	    changeVol(50); //Go to half value

@@ -43,6 +43,7 @@ MixerTray::MixerTray() : QSystemTrayIcon(){
   connect(slider, SIGNAL(valueChanged(int)), this, SLOT(sliderChanged(int)) );
   connect(GUI, SIGNAL(updateTray()), this, SLOT(loadVol()) );
   connect(GUI, SIGNAL(outChanged()), this, SLOT(slotFillOutputDevices()) );
+  connect(actionMenu, SIGNAL(hovered(QAction*)), this, SLOT(hoverDisable(QAction*)) );
   
   //Show a quick icon to prevent a warning message
   this->setIcon(QIcon(":icons/audio-volume-high.png"));
