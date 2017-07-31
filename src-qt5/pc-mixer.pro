@@ -48,6 +48,7 @@ TRANSLATIONS =  i18n/pc-mixer_af.ts \
 		i18n/pc-mixer_el.ts \
 		i18n/pc-mixer_en_US.ts \
 		i18n/pc-mixer_en_GB.ts \
+		i18n/pc-mixer_en_AU.ts \
 		i18n/pc-mixer_en_ZA.ts \
 		i18n/pc-mixer_es.ts \
 		i18n/pc-mixer_et.ts \
