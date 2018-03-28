@@ -32,7 +32,10 @@ target.path=/usr/local/bin
 appreg.files = pc-mixer.desktop
 appreg.path = $${INSTALL_ROOT}/usr/local/share/applications
 
-INSTALLS += target appreg
+xdgstart.files = pc-mixer.desktop
+xdgstart.path = $${INSTALL_ROOT}/usr/local/etc/xdg/autostart
+
+INSTALLS += target appreg xdgstart
 
 TRANSLATIONS =  i18n/pc-mixer_af.ts \
 		i18n/pc-mixer_ar.ts \
