@@ -32,7 +32,13 @@ void MixerGUI::updateGUI(){
   ui->combo_record->clear();
   ui->combo_outdevice->disconnect();
   ui->combo_outdevice->clear();
-  delete ui->scrollArea->widget(); //delete the widget and all children
+  
+  if(ui->scrollArea->widget() != nullptr)
+  {	  
+     delete ui->scrollArea->widget(); //delete the widget and all children
+     ui->scrollArea->setWidget(nullptr);
+  }
+
   ui->scrollArea->setWidget( new QWidget() ); //create a new widget in the scroll area
   ui->scrollArea->widget()->setContentsMargins(0,0,0,0);
   QHBoxLayout *layout = new QHBoxLayout;
@@ -69,7 +75,7 @@ void MixerGUI::updateGUI(){
   ui->scrollArea->setMinimumHeight(ui->scrollArea->widget()->minimumSizeHint().height()+ui->scrollArea->horizontalScrollBar()->height());
   //Now rebuild the output device list
   QStringList outdevs =runShellCommand("cat /dev/sndstat");
-  qDebug() << "Output Devices Found:" << outdevs;
+  qDebug() << outdevs.length() << " of Output Devices Found:" << outdevs;
   for(int i=0; i<outdevs.length(); i++){
     if(outdevs[i].startsWith("pcm")){
       ui->combo_outdevice->addItem(outdevs[i].section(" default",0,0), outdevs[i].section(":",0,0) );
