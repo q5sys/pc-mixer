@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QTimer>
 
 #include "MixerBackend.h"
 
@@ -17,7 +18,7 @@ public:
 	~DeviceWidget();
 
 	void setupDevice(QString device, int Lvol, int Rvol);
-	
+
 	QString device();
 	int LVolume();
 	int RVolume();
@@ -26,6 +27,7 @@ private:
 	Ui::DeviceWidget *ui;
 	int CRV, CLV; //Current R/L volume (in case it was muted)
 	bool changing, ismuted, islinked; // internal status flags
+	QTimer *changeTimer;
 
 	void updateVolumes(int, int);
 	void updateButtons();
@@ -35,10 +37,11 @@ private slots:
 	void linkClicked();
 	void LSliderChanged(int);
 	void RSliderChanged(int);
-	
+	void valueChanged();
+
 signals:
 	void deviceChanged(QString);
-	
+
 };
 
 #endif

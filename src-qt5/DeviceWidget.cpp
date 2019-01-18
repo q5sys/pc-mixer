@@ -3,6 +3,9 @@
 
 DeviceWidget::DeviceWidget(QWidget *parent) : QWidget(parent), ui(new Ui::DeviceWidget){
   ui->setupUi(this); //Load the designer file
+  changeTimer = new QTimer(this);
+    changeTimer->setInterval(1000); //1 second
+    changeTimer->setSingleShot(true);
   //Initialize the rest of the items
   islinked = true;
   ismuted = false;
@@ -13,10 +16,11 @@ DeviceWidget::DeviceWidget(QWidget *parent) : QWidget(parent), ui(new Ui::Device
   connect(ui->slider_R, SIGNAL(valueChanged(int)), this, SLOT(RSliderChanged(int)) );
   connect(ui->push_mute, SIGNAL(clicked()), this, SLOT(muteClicked()) );
   connect(ui->tool_chain, SIGNAL(clicked()), this, SLOT(linkClicked()) );
+  connect(changeTimer, SIGNAL(timeout()), this, SLOT(valueChanged()) );
 }
 
 DeviceWidget::~DeviceWidget(){
-	
+
 }
 
 //===============
@@ -32,9 +36,9 @@ void DeviceWidget::setupDevice(QString device, int Lvol, int Rvol){
   changing = false; //done making changes
   updateButtons();
 }
-	
+
 QString DeviceWidget::device(){
-  return ui->label_device->text();	
+  return ui->label_device->text();
 }
 
 int DeviceWidget::LVolume(){
@@ -62,7 +66,7 @@ void DeviceWidget::updateButtons(){
     ui->push_mute->setText( tr("Unmute") );
   }else{
     ui->push_mute->setIcon( QIcon(":icons/audio-volume-muted.png") );
-    ui->push_mute->setText( tr("Mute") );	  
+    ui->push_mute->setText( tr("Mute") );
   }
 }
 
@@ -103,19 +107,19 @@ void DeviceWidget::linkClicked(){
 void DeviceWidget::LSliderChanged(int Lvol){
   if(changing){ return; } //no double-taps while class is making adjustments
   if(islinked){
-    updateVolumes(Lvol, Lvol);
-  }else{
-    updateVolumes(Lvol, ui->slider_R->value() );
+    if(ui->slider_R->value() != Lvol){ ui->slider_R->setValue(Lvol); }
   }
-  
+  changeTimer->start();
 }
 
 void DeviceWidget::RSliderChanged(int Rvol){
   if(changing){ return; } //no double-taps while class is making adjustments
   if(islinked){
-    updateVolumes(Rvol, Rvol);
-  }else{
-    updateVolumes(ui->slider_L->value(), Rvol);
-  }  
+    if(ui->slider_L->value() != Rvol){ ui->slider_L->setValue(Rvol); }
+  }
+  changeTimer->start();
 }
 
+void DeviceWidget::valueChanged(){
+  updateVolumes( ui->slider_L->value(), ui->slider_R->value());
+}
